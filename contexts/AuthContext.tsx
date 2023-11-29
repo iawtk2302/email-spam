@@ -2,7 +2,6 @@
 import { LoginFormValues } from "@/interface/Form";
 import User from "@/interface/User";
 import { signIn } from "@/services/AuthService";
-import { setupAxiosInterceptors } from "@/services/Axios";
 import { isTokenExpired } from "@/utils/Jwt";
 import { useRouter } from "next/navigation";
 import {
@@ -24,7 +23,6 @@ type AuthContextData = {
 export interface DataStorage {
   user: User;
   isAuthenticated: boolean;
-  accessToken: string;
 }
 
 type AuthProviderProps = {
@@ -42,17 +40,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsLoading(true);
     try {
       const response = await signIn(data);
-      const { user, accessToken } = response;
+      const { user } = response;
       const dataStorage: DataStorage = {
         user: user,
         isAuthenticated: true,
-        accessToken: accessToken,
       };
       localStorage.setItem("dataStorage", JSON.stringify(dataStorage));
       setUser(user);
       setIsAuthenticated(true);
       setIsLoading(false);
-      setupAxiosInterceptors(accessToken, logout);
       router.push("/");
     } catch (error) {
       setIsLoading(false);
@@ -62,18 +58,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem("dataStorage");
+    router.push('/');
   };
   useEffect(() => {
     const dataStorage = localStorage.getItem("dataStorage");
     if (dataStorage !== null) {
       const data: DataStorage = JSON.parse(dataStorage);
-      if (isTokenExpired(data.accessToken)) {
+      if (isTokenExpired(data.user.access)) {
         logout();
         return;
       }
       setUser(data.user);
       setIsAuthenticated(data.isAuthenticated);
-      setupAxiosInterceptors(data.accessToken, logout);
     }
   }, []);
   return (

@@ -1,27 +1,20 @@
-"use client";
-import { useDisclosure } from "@mantine/hooks";
-import {
-  AppShell,
-  Burger,
-  Button,
-  Group,
-  Tabs,
-} from "@mantine/core";
-import { IconBrandGmail } from "@tabler/icons-react";
-import { useState } from "react";
-import ComposeEmailModal from "@/components/ComposeEmail";
+import { AppShell, Burger, Button, Group, Tabs } from '@mantine/core';
+import { IconBrandGmail } from '@tabler/icons-react';
+import React, { useState } from 'react'
+import ComposeEmailModal from './ComposeEmail';
+import { useDisclosure } from '@mantine/hooks';
 import classes from "@/styles/Tab.module.css";
+import { useRouter } from 'next/navigation';
 
-export default function CollapseDesktop() {
-  const [selectedTab, setSelectedTab] = useState<string|null>('inbox');
-  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+function SideBar({
+    children,
+  }: {
+    children: React.ReactNode;
+  }) {
+    const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [isComposeOpen, setIsComposeOpen] = useState(false);
-
-  const onChangeTab=(value:string)=>{
-    setSelectedTab(value);
-  }
-
+  const router = useRouter();
   const openComposeModal = () => {
     setIsComposeOpen(true);
   };
@@ -29,20 +22,6 @@ export default function CollapseDesktop() {
   const closeComposeModal = () => {
     setIsComposeOpen(false);
   };
-
-  const getEmailList = (tab:string) => {
-    return (
-      <div>
-        {/* {emails.map((email) => (
-          <Card key={email.id} onClick={() => handleClick(email)}>
-            <Text weight={700}>{email.sender}</Text>
-            <Text>{email.subject}</Text>
-          </Card>
-        ))} */}
-      </div>
-    );
-  };
-
   return (
     <AppShell
       header={{ height: 60 }}
@@ -71,12 +50,12 @@ export default function CollapseDesktop() {
         </Group>
       </AppShell.Header>
       <Tabs
-        value={selectedTab}
-        onChange={onChangeTab}
+      defaultValue={"inbox"}
         variant="pills"
         orientation="vertical"
         color="#d3e2fd"
         classNames={classes}
+        onChange={(tab)=>router.push(`/email/${tab}`)}
       >
         <AppShell.Navbar p="md">
           <Button onClick={openComposeModal}>Compose Email</Button>
@@ -91,10 +70,11 @@ export default function CollapseDesktop() {
             isOpen={isComposeOpen}
             onClose={closeComposeModal}
           />
-          <Tabs.Panel value="inbox">Inbox</Tabs.Panel>
-          <Tabs.Panel value="spam">Spam</Tabs.Panel>
+        {children}
         </AppShell.Main>
       </Tabs>
     </AppShell>
-  );
+  )
 }
+
+export default SideBar
