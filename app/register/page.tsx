@@ -1,5 +1,5 @@
 "use client";
-import { REGEX_PASSWORD} from "@/constants/Regex";
+import { REGEX_PASSWORD } from "@/constants/Regex";
 import { RegisterFormValues } from "@/interface/Form";
 import { register } from "@/services/AuthService";
 
@@ -27,8 +27,8 @@ function RegisterPage() {
     },
 
     validate: {
-      username: isNotEmpty("Enter your full name"),
-      email: isEmail("Invalid email"),
+      // username: isNotEmpty("Enter your full name"),
+      // email: isEmail("Invalid email"),
       // password: matches(REGEX_PASSWORD, "Invalid password"),
     },
   });

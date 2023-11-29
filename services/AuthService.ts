@@ -20,7 +20,7 @@ export const signIn = async (data: LoginFormValues) => {
 };
 export const register = async (data: RegisterFormValues) => {
   try {
-    const response = await axiosInstance.put(REGISTER_URL, {
+    const response = await axiosInstance.post(REGISTER_URL, {
       email: data.email,
       password: data.password,
       username: data.username,
