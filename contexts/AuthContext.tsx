@@ -41,11 +41,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     try {
       const response = await signIn(data);
       const { user } = response;
+      console.log(user.access);
       const dataStorage: DataStorage = {
         user: user,
         isAuthenticated: true,
       };
       localStorage.setItem("dataStorage", JSON.stringify(dataStorage));
+      localStorage.setItem("accessToken", user.access);
       setUser(user);
       setIsAuthenticated(true);
       setIsLoading(false);
@@ -58,7 +60,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     setUser(null);
     setIsAuthenticated(false);
     localStorage.removeItem("dataStorage");
-    router.push('/');
+    localStorage.removeItem("accessToken");
+    router.push("/");
   };
   useEffect(() => {
     const dataStorage = localStorage.getItem("dataStorage");
