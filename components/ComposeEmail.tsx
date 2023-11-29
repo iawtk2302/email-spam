@@ -7,6 +7,9 @@ import {
   Textarea,
   Box,
 } from "@mantine/core";
+import { ComposeEmailFormValues } from "@/interface/Form";
+import { useForm } from "@mantine/form";
+import { sendEmail } from "@/services/EmailService";
 
 const ComposeEmailModal = ({
   isOpen,
@@ -15,19 +18,23 @@ const ComposeEmailModal = ({
   isOpen: boolean;
   onClose: () => void;
 }) => {
-  const [to, setTo] = useState("");
-  const [subject, setSubject] = useState("");
-  const [message, setMessage] = useState("");
+  // const [to, setTo] = useState("");
+  // const [subject, setSubject] = useState("");
+  // const [message, setMessage] = useState("");
 
-  const handleSubmit = () => {
-    // Xử lý việc gửi email, có thể gọi API ở đây
-    console.log("To:", to);
-    console.log("Subject:", subject);
-    console.log("Message:", message);
-
-    // Đóng modal sau khi gửi email
+  const handleSubmit = (values: ComposeEmailFormValues) => {
+    sendEmail(values);
     onClose();
   };
+
+  const form = useForm<ComposeEmailFormValues>({
+    initialValues: {
+      title: "",
+      body: "",
+      receiver_email: "",
+    },
+    validate: {},
+  });
 
   return (
     <Modal
@@ -47,37 +54,38 @@ const ComposeEmailModal = ({
       }}
     >
       <Container>
-        <TextInput
-          label="To:"
-          placeholder="Recipient"
-          value={to}
-          onChange={(event) => setTo(event.target.value)}
-        />
-        <TextInput
-          label="Subject:"
-          placeholder="Subject"
-          value={subject}
-          onChange={(event) => setSubject(event.target.value)}
-        />
-        <Textarea
-          minRows={20}
-          maxRows={25}
-          label="Message:"
-          placeholder="Type your message here..."
-          multiline
-          styles={{ input: { height: 200 } }}
-        />
-        <div
-          style={{
-            marginTop: "1rem",
-            display: "flex",
-            justifyContent: "flex-end",
-          }}
-        >
-          <Button onClick={handleSubmit} variant="primary">
-            Send
-          </Button>
-        </div>
+        <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+          <TextInput
+            label="To:"
+            placeholder="Recipient"
+            {...form.getInputProps("receiver_email")}
+          />
+          <TextInput
+            label="Subject:"
+            placeholder="Subject"
+            {...form.getInputProps("title")}
+          />
+          <Textarea
+            minRows={20}
+            maxRows={25}
+            label="Message:"
+            placeholder="Type your message here..."
+            multiline
+            styles={{ input: { height: 200 } }}
+            {...form.getInputProps("body")}
+          />
+          <div
+            style={{
+              marginTop: "1rem",
+              display: "flex",
+              justifyContent: "flex-end",
+            }}
+          >
+            <Button type="submit" variant="primary">
+              Send
+            </Button>
+          </div>
+        </form>
       </Container>
     </Modal>
   );

@@ -5,29 +5,17 @@ import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
-import { AppShell, Burger, Button, Group, MantineProvider, Tabs } from "@mantine/core";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
+import { MantineProvider } from "@mantine/core";
 import { theme } from "@/theme";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
 import { Notifications } from "@mantine/notifications";
-import { useDisclosure } from "@mantine/hooks";
-import { IconBrandGmail } from "@tabler/icons-react";
-
-import { useState } from "react";
-import ComposeEmailModal from "@/components/ComposeEmail";
-import SideBar from "@/components/SideBar";
-// export const metadata = {
-//   title: "EZTOEIC",
-//   description: "I code it",
-// };
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const {isAuthenticated} = useAuth();
+  const { isAuthenticated } = useAuth();
   return (
     <html lang="en">
       <head>
@@ -37,9 +25,7 @@ export default function RootLayout({
         <AuthProvider>
           <MantineProvider theme={theme}>
             <Notifications />
-            {
-              children
-            }
+            {children}
           </MantineProvider>
         </AuthProvider>
       </body>

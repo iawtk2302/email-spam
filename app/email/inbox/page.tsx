@@ -1,29 +1,34 @@
 "use client";
-
+import EmailItem from "@/components/EmailItem";
 import Loading from "@/components/Loading";
-import { useAuth } from "@/contexts/AuthContext";
-import { EmailDetail } from "@/interface/Email";
+import { Email } from "@/interface/Email";
 import { axiosInstance } from "@/services/Axios";
+import { useState } from "react";
 import useSWR from "swr";
 
 export default function InboxPage() {
-  const { logout } = useAuth();
+  const [emails, setEmails] = useState<Email[]>([]);
   const fetcher = async (url: string) => {
     let res = await axiosInstance.get(url);
     return res.data;
   };
-  const { data, error, isLoading } = useSWR<EmailDetail[]>(`/emails`, fetcher, {
+  const { data, error, isLoading } = useSWR(`/emails/nspam`, fetcher, {
     onSuccess: (data) => {
-      console.log(data);
+      setEmails(data.data);
     },
   });
   if (error) return <div>{error.message}</div>;
   if (isLoading) return <Loading />;
   return (
-    <div>
-      {/* <button onClick={logout}>logout</button> */}
-      {data?.map((email) => (
-        <div>{email.senderName}</div>
+    <div
+      style={{
+        display: "flex",
+        width: "76vw",
+        flexDirection: "column",
+      }}
+    >
+      {emails.map((email) => (
+        <EmailItem email={email} key={email.id} />
       ))}
     </div>
   );
