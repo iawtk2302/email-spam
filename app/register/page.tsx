@@ -68,7 +68,7 @@ function RegisterPage() {
           <TextInput
             label="Username"
             placeholder="Your full name"
-            {...registerForm.getInputProps("fullName")}
+            {...registerForm.getInputProps("username")}
           />
           <TextInput
             label="Email"

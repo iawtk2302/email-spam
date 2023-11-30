@@ -1,20 +1,18 @@
-import { AppShell, Burger, Button, Group, Tabs } from '@mantine/core';
-import { IconBrandGmail } from '@tabler/icons-react';
-import React, { useState } from 'react'
-import ComposeEmailModal from './ComposeEmail';
-import { useDisclosure } from '@mantine/hooks';
+import { AppShell, Burger, Button, Group, Space, Tabs } from "@mantine/core";
+import { IconBrandGmail } from "@tabler/icons-react";
+import React, { useState } from "react";
+import ComposeEmailModal from "./ComposeEmail";
+import { useDisclosure } from "@mantine/hooks";
 import classes from "@/styles/Tab.module.css";
-import { useRouter } from 'next/navigation';
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 
-function SideBar({
-    children,
-  }: {
-    children: React.ReactNode;
-  }) {
-    const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
+function SideBar({ children }: { children: React.ReactNode }) {
+  const [mobileOpened, { toggle: toggleMobile }] = useDisclosure();
   const [desktopOpened, { toggle: toggleDesktop }] = useDisclosure(true);
   const [isComposeOpen, setIsComposeOpen] = useState(false);
   const router = useRouter();
+  const { logout } = useAuth();
   const openComposeModal = () => {
     setIsComposeOpen(true);
   };
@@ -46,16 +44,17 @@ function SideBar({
             visibleFrom="sm"
             size="sm"
           />
-          <IconBrandGmail size={30} />Gmail
+          <IconBrandGmail size={30} />
+          Gmail
         </Group>
       </AppShell.Header>
       <Tabs
-      defaultValue={"inbox"}
+        defaultValue={"inbox"}
         variant="pills"
         orientation="vertical"
         color="#d3e2fd"
         classNames={classes}
-        onChange={(tab)=>router.push(`/email/${tab}`)}
+        onChange={(tab) => router.push(`/email/${tab}`)}
       >
         <AppShell.Navbar p="md">
           <Button onClick={openComposeModal}>Compose Email</Button>
@@ -64,17 +63,19 @@ function SideBar({
             <Tabs.Tab value="inbox">Inbox</Tabs.Tab>
             <Tabs.Tab value="spam">Spam</Tabs.Tab>
           </Tabs.List>
+          <Space />
+          <Button onClick={logout}>Logout</Button>
         </AppShell.Navbar>
         <AppShell.Main>
           <ComposeEmailModal
             isOpen={isComposeOpen}
             onClose={closeComposeModal}
           />
-        {children}
+          {children}
         </AppShell.Main>
       </Tabs>
     </AppShell>
-  )
+  );
 }
 
-export default SideBar
+export default SideBar;

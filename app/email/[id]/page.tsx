@@ -35,7 +35,7 @@ export default function EmailDetailPage() {
       <IconChevronLeft onClick={() => router.back()} />
       <Text style={{ fontSize: 30 }}>{emailDetail?.title}</Text>
       <Text style={{ fontSize: 24, fontWeight: "bold" }}>
-        {emailDetail?.senderName}
+        {emailDetail?.sender_name}
       </Text>
       <Text>{emailDetail?.body}</Text>
     </div>

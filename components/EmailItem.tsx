@@ -24,12 +24,12 @@ function EmailItem({ email }: { email: Email }) {
       onClick={() => router.push(`/email/${email.id}`)}
     >
       <Flex justify={"space-between"}>
-        <Text>{email.senderName}</Text>
+        <Text>{email.sender_name}</Text>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <Text>{email.title}</Text>
           <Text style={{ color: "gray" }}>- {email.body}</Text>
         </div>
-        <Text style={{ color: "gray" }}>{formatDate(email.timeSend)}</Text>
+        <Text style={{ color: "gray" }}>{formatDate(email.time_send)}</Text>
       </Flex>
     </Card>
   );

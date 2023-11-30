@@ -65,6 +65,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
   useEffect(() => {
     const dataStorage = localStorage.getItem("dataStorage");
+
     if (dataStorage !== null) {
       const data: DataStorage = JSON.parse(dataStorage);
       if (isTokenExpired(data.user.access)) {

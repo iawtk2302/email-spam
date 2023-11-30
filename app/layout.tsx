@@ -5,9 +5,9 @@ import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/notifications/styles.css";
-import { MantineProvider } from "@mantine/core";
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { theme } from "@/theme";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { Notifications } from "@mantine/notifications";
 
 export default function RootLayout({
@@ -15,7 +15,6 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated } = useAuth();
   return (
     <html lang="en">
       <head>
@@ -23,7 +22,8 @@ export default function RootLayout({
       </head>
       <body suppressHydrationWarning={true}>
         <AuthProvider>
-          <MantineProvider theme={theme}>
+          <ColorSchemeScript defaultColorScheme="light" />
+          <MantineProvider theme={theme} defaultColorScheme="light">
             <Notifications />
             {children}
           </MantineProvider>
