@@ -10,6 +10,7 @@ export interface Email {
 }
 
 export interface EmailDetail {
+  id: number;
   body: string;
   created_at: string;
   is_spam: boolean;

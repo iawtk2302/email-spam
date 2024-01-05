@@ -61,6 +61,7 @@ function SideBar({ children }: { children: React.ReactNode }) {
           <div style={{ height: 20 }} />
           <Tabs.List>
             <Tabs.Tab value="inbox">Inbox</Tabs.Tab>
+            <Tabs.Tab value="sended">Sended</Tabs.Tab>
             <Tabs.Tab value="spam">Spam</Tabs.Tab>
           </Tabs.List>
           <Space />

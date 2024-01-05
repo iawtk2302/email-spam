@@ -1,5 +1,5 @@
 import { Email } from "@/interface/Email";
-import { Card, Container, Flex, Text } from "@mantine/core";
+import { Card, Flex, Text } from "@mantine/core";
 import React from "react";
 import { format, isToday } from "date-fns";
 import { useRouter } from "next/navigation";
@@ -21,9 +21,11 @@ function EmailItem({ email }: { email: Email }) {
       radius="md"
       withBorder
       style={{ marginBottom: 10 }}
-      onClick={() => router.push(`/email/${email.id}`)}
     >
-      <Flex justify={"space-between"}>
+      <Flex
+        justify={"space-between"}
+        onClick={() => router.push(`/email/${email.id}`)}
+      >
         <Text>{email.sender_name}</Text>
         <div style={{ display: "flex", flexDirection: "row" }}>
           <Text>{email.title}</Text>

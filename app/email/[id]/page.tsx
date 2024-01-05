@@ -6,7 +6,7 @@ import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { Text } from "@mantine/core";
 import useSWR from "swr";
-import { IconChevronLeft } from "@tabler/icons-react";
+import { IconChevronLeft, IconTrash, IconReload } from "@tabler/icons-react";
 
 export default function EmailDetailPage() {
   const [emailDetail, setEmailDetail] = useState<EmailDetail | null>(null);
@@ -16,7 +16,10 @@ export default function EmailDetailPage() {
     let res = await axiosInstance.get(url);
     return res.data;
   };
-  console.log(param);
+  const handleClick = async (update: boolean) => {
+    await axiosInstance.put(`emails/${param.id}?isSpam=${update}`);
+    router.back();
+  };
   const { data, error, isLoading } = useSWR(`/emails/${param.id}`, fetcher, {
     onSuccess: (data) => {
       setEmailDetail(data.data);
@@ -32,7 +35,20 @@ export default function EmailDetailPage() {
         flexDirection: "column",
       }}
     >
-      <IconChevronLeft onClick={() => router.back()} />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <IconChevronLeft onClick={() => router.back()} />
+        {emailDetail?.is_spam ? (
+          <IconReload onClick={() => handleClick(!emailDetail!.is_spam)} />
+        ) : (
+          <IconTrash onClick={() => handleClick(!emailDetail!.is_spam)} />
+        )}
+      </div>
       <Text style={{ fontSize: 30 }}>{emailDetail?.title}</Text>
       <Text style={{ fontSize: 24, fontWeight: "bold" }}>
         {emailDetail?.sender_name}

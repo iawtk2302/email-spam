@@ -8,7 +8,7 @@ import {
   Box,
 } from "@mantine/core";
 import { ComposeEmailFormValues } from "@/interface/Form";
-import { useForm } from "@mantine/form";
+import { useForm, isNotEmpty, isEmail } from "@mantine/form";
 import { sendEmail } from "@/services/EmailService";
 
 const ComposeEmailModal = ({
@@ -33,7 +33,11 @@ const ComposeEmailModal = ({
       body: "",
       receiver_email: "",
     },
-    validate: {},
+    validate: {
+      receiver_email: isEmail("Invalid email"),
+      title: isNotEmpty("Enter subject"),
+      body: isNotEmpty("Enter message"),
+    },
   });
 
   return (
