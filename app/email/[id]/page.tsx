@@ -27,7 +27,6 @@ export default function EmailDetailPage() {
       setEmailDetail(data.data);
     },
   });
-
   if (error) return <div>{error.message}</div>;
   if (isLoading) return <Loading />;
   return (
@@ -46,7 +45,7 @@ export default function EmailDetailPage() {
         }}
       >
         <IconChevronLeft onClick={() => router.back()} />
-        {!isSended ? (
+        {!(isSended == "true") ? (
           emailDetail?.is_spam ? (
             <IconReload onClick={() => handleClick(!emailDetail!.is_spam)} />
           ) : (
