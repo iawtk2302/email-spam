@@ -36,7 +36,7 @@ export default function SpamPage() {
       }}
     >
       {emails.map((email) => (
-        <EmailItem email={email} key={email.id} />
+        <EmailItem email={email} key={email.id} isSended={false} />
       ))}
       <Pagination
         value={activePage}

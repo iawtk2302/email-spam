@@ -2,7 +2,7 @@
 import Loading from "@/components/Loading";
 import { EmailDetail } from "@/interface/Email";
 import { axiosInstance } from "@/services/Axios";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { Text } from "@mantine/core";
 import useSWR from "swr";
@@ -12,6 +12,8 @@ export default function EmailDetailPage() {
   const [emailDetail, setEmailDetail] = useState<EmailDetail | null>(null);
   const router = useRouter();
   const param = useParams();
+  const query = useSearchParams();
+  const isSended = query.get("isSended");
   const fetcher = async (url: string) => {
     let res = await axiosInstance.get(url);
     return res.data;
@@ -25,6 +27,7 @@ export default function EmailDetailPage() {
       setEmailDetail(data.data);
     },
   });
+
   if (error) return <div>{error.message}</div>;
   if (isLoading) return <Loading />;
   return (
@@ -43,11 +46,13 @@ export default function EmailDetailPage() {
         }}
       >
         <IconChevronLeft onClick={() => router.back()} />
-        {emailDetail?.is_spam ? (
-          <IconReload onClick={() => handleClick(!emailDetail!.is_spam)} />
-        ) : (
-          <IconTrash onClick={() => handleClick(!emailDetail!.is_spam)} />
-        )}
+        {!isSended ? (
+          emailDetail?.is_spam ? (
+            <IconReload onClick={() => handleClick(!emailDetail!.is_spam)} />
+          ) : (
+            <IconTrash onClick={() => handleClick(!emailDetail!.is_spam)} />
+          )
+        ) : null}
       </div>
       <Text style={{ fontSize: 30 }}>{emailDetail?.title}</Text>
       <Text style={{ fontSize: 24, fontWeight: "bold" }}>

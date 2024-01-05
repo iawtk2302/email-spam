@@ -4,7 +4,7 @@ import React from "react";
 import { format, isToday } from "date-fns";
 import { useRouter } from "next/navigation";
 
-function EmailItem({ email }: { email: Email }) {
+function EmailItem({ email, isSended }: { email: Email; isSended: boolean }) {
   const router = useRouter();
   function formatDate(inputDate: string) {
     const date = new Date(inputDate);
@@ -24,7 +24,7 @@ function EmailItem({ email }: { email: Email }) {
     >
       <Flex
         justify={"space-between"}
-        onClick={() => router.push(`/email/${email.id}`)}
+        onClick={() => router.push(`/email/${email.id}?isSended=${isSended}`)}
       >
         <Text>{email.sender_name}</Text>
         <div style={{ display: "flex", flexDirection: "row" }}>

@@ -32,7 +32,7 @@ export default function SendedPage() {
       }}
     >
       {emails.map((email) => (
-        <EmailItem email={email} key={email.id} />
+        <EmailItem email={email} key={email.id} isSended={true} />
       ))}
       <Pagination
         value={activePage}
