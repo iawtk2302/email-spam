@@ -15,7 +15,9 @@ export interface EmailDetail {
   created_at: string;
   is_spam: boolean;
   receiver_email: string;
+  receiver_name: string;
   sender_name: string;
+  sender_email: string;
   title: string;
 }
 
